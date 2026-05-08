@@ -1,0 +1,12 @@
+{
+  "name": "intercert-angularjs-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "build": "node scripts/write-config.js"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "info": {
+    "name": "InterCert Microservices Assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "authUrl", "value": "http://localhost:4000" },
+    { "key": "userUrl", "value": "http://localhost:5000" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{authUrl}}/auth/register",
+        "body": { "mode": "raw", "raw": "{\"name\":\"Pawan Demo\",\"email\":\"pawan.demo@example.com\",\"password\":\"Password1\",\"phone\":\"9999999999\"}" }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{authUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\"email\":\"pawan.demo@example.com\",\"password\":\"Password1\"}" }
+      }
+    },
+    {
+      "name": "Validate Token",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{authUrl}}/auth/validate",
+        "body": { "mode": "raw", "raw": "{\"token\":\"{{token}}\"}" }
+      }
+    },
+    {
+      "name": "View Profile",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{userUrl}}/profile"
+      }
+    },
+    {
+      "name": "Edit Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{userUrl}}/profile",
+        "body": { "mode": "raw", "raw": "{\"name\":\"Pawan Updated\",\"email\":\"pawan.demo@example.com\",\"phone\":\"8888888888\"}" }
+      }
+    },
+    {
+      "name": "Upload Photo",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{userUrl}}/profile/photo",
+        "body": {
+          "mode": "formdata",
+          "formdata": [{ "key": "photo", "type": "file", "src": "" }]
+        }
+      }
+    },
+    {
+      "name": "Change Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{userUrl}}/password/change",
+        "body": { "mode": "raw", "raw": "{\"oldPassword\":\"Password1\",\"newPassword\":\"Password2\"}" }
+      }
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{userUrl}}/dashboard"
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{authUrl}}/auth/logout"
+      }
+    },
+    { "name": "Auth Health", "request": { "method": "GET", "url": "{{authUrl}}/health" } },
+    { "name": "User Health", "request": { "method": "GET", "url": "{{userUrl}}/health" } },
+    { "name": "Auth Metrics", "request": { "method": "GET", "url": "{{authUrl}}/metrics" } },
+    { "name": "User Metrics", "request": { "method": "GET", "url": "{{userUrl}}/metrics" } }
+  ]
+}

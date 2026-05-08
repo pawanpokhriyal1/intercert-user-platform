@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" ng-app="intercertApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InterCert User Platform</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body ng-controller="MainController as vm">
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>InterCert User Platform</h1>
+        <p ng-if="!vm.token">Register or login to manage your profile.</p>
+        <p ng-if="vm.token">{{ vm.dashboard.message || 'Welcome' }}</p>
+      </div>
+      <button ng-if="vm.token" ng-click="vm.logout()">Logout</button>
+    </header>
+
+    <div class="alert success" ng-if="vm.success">{{ vm.success }}</div>
+    <div class="alert error" ng-if="vm.error">{{ vm.error }}</div>
+
+    <section class="grid" ng-if="!vm.token">
+      <form ng-submit="vm.register()" class="panel">
+        <h2>Register</h2>
+        <label>Name <input ng-model="vm.registerForm.name" required></label>
+        <label>Email <input type="email" ng-model="vm.registerForm.email" required></label>
+        <label>Password <input type="password" ng-model="vm.registerForm.password" required minlength="8"></label>
+        <label>Phone <input ng-model="vm.registerForm.phone" required></label>
+        <button type="submit">Create account</button>
+      </form>
+
+      <form ng-submit="vm.login()" class="panel">
+        <h2>Login</h2>
+        <label>Email <input type="email" ng-model="vm.loginForm.email" required></label>
+        <label>Password <input type="password" ng-model="vm.loginForm.password" required></label>
+        <button type="submit">Login</button>
+      </form>
+    </section>
+
+    <section class="grid" ng-if="vm.token">
+      <form ng-submit="vm.updateProfile()" class="panel">
+        <h2>Profile</h2>
+        <img ng-if="vm.profile.photoUrl" class="avatar" ng-src="{{ vm.userApi + vm.profile.photoUrl }}" alt="Profile photo">
+        <label>Name <input ng-model="vm.profile.name" required></label>
+        <label>Email <input type="email" ng-model="vm.profile.email" required></label>
+        <label>Phone <input ng-model="vm.profile.phone" required></label>
+        <button type="submit">Save profile</button>
+      </form>
+
+      <form ng-submit="vm.uploadPhoto()" class="panel">
+        <h2>Upload Photo</h2>
+        <input type="file" file-model="vm.photo" accept="image/*" required>
+        <button type="submit">Upload</button>
+      </form>
+
+      <form ng-submit="vm.changePassword()" class="panel">
+        <h2>Change Password</h2>
+        <label>Old password <input type="password" ng-model="vm.passwordForm.oldPassword" required></label>
+        <label>New password <input type="password" ng-model="vm.passwordForm.newPassword" required minlength="8"></label>
+        <button type="submit">Change password</button>
+      </form>
+
+      <section class="panel">
+        <h2>Dashboard</h2>
+        <p class="welcome">{{ vm.dashboard.message }}</p>
+        <button ng-click="vm.loadProfile()">Refresh profile</button>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="/config.js"></script>
+  <script src="/app/app.js"></script>
+</body>
+</html>

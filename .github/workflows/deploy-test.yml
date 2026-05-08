@@ -1,0 +1,25 @@
+name: Deploy Test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build auth service
+        run: npm install && npm run build
+        working-directory: auth-service
+      - name: Build user service
+        run: npm install && npm run build
+        working-directory: user-service
+      - name: Trigger Render test deploys
+        if: ${{ secrets.RENDER_AUTH_TEST_DEPLOY_HOOK != '' && secrets.RENDER_USER_TEST_DEPLOY_HOOK != '' }}
+        run: |
+          curl -X POST "${{ secrets.RENDER_AUTH_TEST_DEPLOY_HOOK }}"
+          curl -X POST "${{ secrets.RENDER_USER_TEST_DEPLOY_HOOK }}"

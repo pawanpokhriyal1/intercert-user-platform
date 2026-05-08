@@ -1,0 +1,12 @@
+{
+  "name": "intercert-user-platform",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "setup:dev": "npm --prefix auth-service run setup:dev && npm --prefix user-service run setup:dev",
+    "setup:test": "npm --prefix auth-service run setup:test && npm --prefix user-service run setup:test",
+    "setup:live": "npm --prefix auth-service run setup:live && npm --prefix user-service run setup:live",
+    "dev:auth": "npm --prefix auth-service run start:dev",
+    "dev:user": "npm --prefix user-service run start:dev"
+  }
+}
