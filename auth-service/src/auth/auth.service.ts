@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectDataSource } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -33,12 +33,18 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     await this.credentials.save({ userId, email: normalizedEmail, passwordHash, createdAt: now, updatedAt: now });
 
-    await axios.post(`${this.config.get('USER_SERVICE_URL')}/internal/users`, {
-      userId,
-      name: dto.name,
-      email: normalizedEmail,
-      phone: dto.phone,
-    });
+    try {
+      await axios.post(`${this.config.get('USER_SERVICE_URL')}/internal/users`, {
+        userId,
+        name: dto.name,
+        email: normalizedEmail,
+        phone: dto.phone,
+      });
+    } catch (error) {
+      await this.credentials.deleteOne({ userId });
+      console.error('[register-profile-create-failed]', error instanceof Error ? error.message : error);
+      throw new ServiceUnavailableException('User service is not available. Please try registering again.');
+    }
 
     setTimeout(() => console.log(`[welcome-email] Welcome ${dto.name} <${normalizedEmail}>`), 0);
     return { userId, email: normalizedEmail, message: 'Registered successfully' };
