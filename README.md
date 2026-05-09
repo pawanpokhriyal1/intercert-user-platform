@@ -36,10 +36,11 @@ Test uses deployed services from the `test` branch:
 
 Live uses deployed services from the `main` branch:
 
+- Frontend: `https://intercert-user-platform.vercel.app`
 - Auth Service: `https://intercert-auth-service.onrender.com`
 - User Service: `https://intercert-user-service.onrender.com`
 - Databases: `intercert_auth_live`, `intercert_user_live`
-- Config files: `auth-service/.env.live`, `user-service/.env.live`
+- Configuration is stored in Render and Vercel environment variables.
 
 ## Selected Extra Skills
 
@@ -61,9 +62,7 @@ Create cloud env files from the examples:
 
 ```bash
 cp auth-service/.env.test.example auth-service/.env.test
-cp auth-service/.env.live.example auth-service/.env.live
 cp user-service/.env.test.example user-service/.env.test
-cp user-service/.env.live.example user-service/.env.live
 ```
 
 Run setup commands:
@@ -71,7 +70,6 @@ Run setup commands:
 ```bash
 npm run setup:dev
 npm run setup:test
-npm run setup:live
 ```
 
 `setup:test` runs migrations and preloads three dummy users.
@@ -138,7 +136,7 @@ Render backend:
 - Use Node runtime.
 - Build command: `npm install && npm run build`
 - Start command: `node dist/main.js`
-- Add env vars from `.env.test.example` or `.env.live.example`.
+- Add environment variables directly in Render for each service.
 - Do not set `PORT` on Render; Render supplies it automatically.
 
 Render Test env examples:
