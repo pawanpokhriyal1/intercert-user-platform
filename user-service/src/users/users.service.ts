@@ -28,18 +28,29 @@ export class UsersService {
     return this.users.save({ ...dto, email: dto.email.toLowerCase(), createdAt: now, updatedAt: now });
   }
 
-  async getProfile(userId: string) {
+  async getProfile(userId: string, email?: string) {
     const cached = this.cache.get(userId);
     if (cached && cached.expiresAt > Date.now()) return cached.profile;
 
-    const profile = await this.users.findOneBy({ userId });
+    let profile = await this.users.findOneBy({ userId });
+    if (!profile && email) {
+      const now = new Date();
+      profile = await this.users.save({
+        userId,
+        email: email.toLowerCase(),
+        name: email.split('@')[0],
+        phone: '',
+        createdAt: now,
+        updatedAt: now,
+      });
+    }
     if (!profile) throw new NotFoundException('Profile not found');
     this.cache.set(userId, { profile, expiresAt: Date.now() + 120000 });
     return profile;
   }
 
-  async updateProfile(userId: string, dto: UpdateProfileDto) {
-    const profile = await this.getProfile(userId);
+  async updateProfile(userId: string, dto: UpdateProfileDto, email?: string) {
+    const profile = await this.getProfile(userId, email);
     Object.assign(profile, { ...dto, email: dto.email.toLowerCase(), updatedAt: new Date() });
     const saved = await this.users.save(profile);
     this.cache.delete(userId);

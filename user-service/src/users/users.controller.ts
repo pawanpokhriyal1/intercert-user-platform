@@ -18,13 +18,13 @@ export class UsersController {
   @Get('profile')
   @UseGuards(AuthGuard)
   getProfile(@Req() req: any) {
-    return this.usersService.getProfile(req.user.userId);
+    return this.usersService.getProfile(req.user.userId, req.user.email);
   }
 
   @Put('profile')
   @UseGuards(AuthGuard)
   updateProfile(@Req() req: any, @Body() dto: UpdateProfileDto) {
-    return this.usersService.updateProfile(req.user.userId, dto);
+    return this.usersService.updateProfile(req.user.userId, dto, req.user.email);
   }
 
   @Post('profile/photo')
@@ -48,7 +48,7 @@ export class UsersController {
   @Get('dashboard')
   @UseGuards(AuthGuard)
   async dashboard(@Req() req: any) {
-    const profile = await this.usersService.getProfile(req.user.userId);
+    const profile = await this.usersService.getProfile(req.user.userId, req.user.email);
     return { message: `Welcome ${profile.name}` };
   }
 
