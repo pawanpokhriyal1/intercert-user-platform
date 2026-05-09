@@ -13,9 +13,10 @@ async function run() {
   const collection = AuthDataSource.getMongoRepository(AuthCredential);
   for (const user of users) {
     const passwordHash = await bcrypt.hash(user.password, 10);
+    const { password: _password, ...credential } = user;
     await collection.updateOne(
       { userId: user.userId },
-      { $set: { ...user, passwordHash, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() }, $unset: { password: '' } },
+      { $set: { ...credential, passwordHash, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
       { upsert: true },
     );
   }
