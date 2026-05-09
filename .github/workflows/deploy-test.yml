@@ -1,8 +1,8 @@
-name: Deploy Test
+name: CI/CD
 
 on:
   push:
-    branches: [test]
+    branches: [main, test]
 
 jobs:
   deploy-test:
