@@ -8,6 +8,8 @@ services:
   auth-service:
     build: ./auth-service
     env_file: ./auth-service/.env.dev
+    environment:
+      MONGO_URI: mongodb://mongo:27017
     ports:
       - "4000:4000"
     depends_on:
@@ -15,6 +17,8 @@ services:
   user-service:
     build: ./user-service
     env_file: ./user-service/.env.dev
+    environment:
+      MONGO_URI: mongodb://mongo:27017
     ports:
       - "5000:5000"
     depends_on:

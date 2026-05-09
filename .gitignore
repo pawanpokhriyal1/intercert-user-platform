@@ -5,4 +5,6 @@ dist/
 .env.live
 uploads/*
 !uploads/.gitkeep
+user-service/uploads/*
+!user-service/uploads/.gitkeep
 .DS_Store
