@@ -111,7 +111,7 @@ Vercel frontend:
 - Root directory: `frontend`
 - Build command: `npm run build`
 - Output directory: `.`
-- Set `VERCEL_AUTH_API_URL` and `VERCEL_USER_API_URL` to the Render URLs.
+- Set `AUTH_API_URL` and `USER_API_URL` to the Render URLs. Do not use the `VERCEL_` prefix for custom variables because Vercel reserves it for system values.
 
 MongoDB Atlas:
 
