@@ -89,9 +89,31 @@ npm --prefix user-service run seed:test -- --env=.env.test
 
 ## Local Run
 
+Start MongoDB before running the services. You can use an installed local MongoDB service, or start MongoDB with Docker:
+
+```bash
+docker compose up mongo
+```
+
+Then run migrations:
+
+```bash
+npm run setup:dev
+```
+
+Start the two backend services in separate terminals:
+
 ```bash
 npm run dev:auth
+```
+
+```bash
 npm run dev:user
+```
+
+Start the frontend:
+
+```bash
 cd frontend && npm install && npm run build && npm start
 ```
 
@@ -100,6 +122,14 @@ Local URLs:
 - Frontend: `http://localhost:3000` or the URL printed by `serve`
 - Auth Service: `http://localhost:4000`
 - User Service: `http://localhost:5000`
+
+Full Docker local run is also supported:
+
+```bash
+docker compose up --build
+```
+
+In Docker Compose, the backend containers use `mongodb://mongo:27017`; when running directly on your machine, `.env.dev` uses `mongodb://localhost:27017`.
 
 ## Test Credentials
 
